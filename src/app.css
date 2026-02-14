@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+@theme {
+	--color-primary: #6366f1;
+	--color-primary-light: #818cf8;
+
+	--color-surface: #0f172a;
+	--color-surface-light: #1e293b;
+	--color-surface-lighter: #334155;
+
+	--color-text: #e2e8f0;
+	--color-text-muted: #94a3b8;
+
+	--color-present: #34d399;
+	--color-absent: #f87171;
+	--color-leaving: #fbbf24;
+	--color-returning: #60a5fa;
+	--color-mess-cut: #a78bfa;
+	--color-no-data: #475569;
+
+	--font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+	html {
+		font-family: var(--font-sans);
+		background-color: var(--color-surface);
+		color: var(--color-text);
+		-webkit-tap-highlight-color: transparent;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	body {
+		min-height: 100dvh;
+	}
+
+	::selection {
+		background-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+	}
+
+	input,
+	select,
+	textarea {
+		color-scheme: dark;
+	}
+}
+
+/* Animations */
+@keyframes fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes pulse-soft {
+
+	0%,
+	100% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0.6;
+	}
+}
+
+@keyframes slide-up {
+	from {
+		opacity: 0;
+		transform: translateY(100%);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.animate-fade-in {
+	animation: fade-in 0.3s ease-out;
+}
+
+.animate-spin {
+	animation: spin 1s linear infinite;
+}
+
+.animate-pulse-soft {
+	animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.animate-slide-up {
+	animation: slide-up 0.25s ease-out;
+}

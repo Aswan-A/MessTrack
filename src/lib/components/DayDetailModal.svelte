@@ -51,9 +51,9 @@
             case "ABSENT":
                 return "bg-absent text-white";
             case "LEAVING":
-                return "bg-leaving text-black";
+                return "bg-leaving text-white";
             case "RETURNING":
-                return "bg-returning text-white";
+                return "bg-returning text-black";
             default:
                 return "bg-no-data text-white";
         }
@@ -142,8 +142,8 @@
                             <span
                                 class="text-xs font-medium px-2 py-0.5 rounded {event.type ===
                                 'LEAVE'
-                                    ? 'bg-leaving text-black'
-                                    : 'bg-returning text-white'}"
+                                    ? 'bg-white text-black'
+                                    : 'border border-white text-white'}"
                             >
                                 {event.type}
                             </span>

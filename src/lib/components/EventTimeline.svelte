@@ -52,8 +52,8 @@
                 <span
                     class="text-xs font-medium px-2 py-1 rounded-lg {event.type ===
                     'LEAVE'
-                        ? 'bg-leaving text-black'
-                        : 'bg-returning text-white'}"
+                        ? 'bg-white text-black'
+                        : 'border border-white text-white'}"
                 >
                     {event.type === "LEAVE" ? "→ Left" : "← Back"}
                 </span>

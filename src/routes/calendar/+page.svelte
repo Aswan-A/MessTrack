@@ -7,6 +7,7 @@
         calculateMonth,
         getMonthSummary,
         getConflictingEventIds,
+        getPostDeleteConflicts,
     } from "$lib/engine";
     import {
         updateEvent as dbUpdateEvent,
@@ -55,7 +56,13 @@
 
     async function handleDeleteEvent(e: CustomEvent<{ event: HostelEvent }>) {
         await dbDeleteEvent(e.detail.event.id);
-        const allEvents = await getAllEvents();
+        // Cascade: delete any adjacent same-type events that resulted from the deletion
+        let allEvents = await getAllEvents();
+        const conflicts = getPostDeleteConflicts(allEvents);
+        for (const id of conflicts) {
+            await dbDeleteEvent(id);
+        }
+        allEvents = await getAllEvents();
         events.set(allEvents);
         selectedDay = null;
     }

@@ -2,7 +2,10 @@
     import EventTimeline from "$lib/components/EventTimeline.svelte";
     import EventEditor from "$lib/components/EventEditor.svelte";
     import { events } from "$lib/stores";
-    import { getConflictingEventIds } from "$lib/engine";
+    import {
+        getConflictingEventIds,
+        getPostDeleteConflicts,
+    } from "$lib/engine";
     import {
         addEvent as dbAddEvent,
         updateEvent as dbUpdateEvent,
@@ -84,7 +87,13 @@
 
     async function handleDelete(e: CustomEvent<{ event: HostelEvent }>) {
         await dbDeleteEvent(e.detail.event.id);
-        const allEvents = await getAllEvents();
+        // Cascade: delete any adjacent same-type events that resulted from the deletion
+        let allEvents = await getAllEvents();
+        const conflicts = getPostDeleteConflicts(allEvents);
+        for (const id of conflicts) {
+            await dbDeleteEvent(id);
+        }
+        allEvents = await getAllEvents();
         events.set(allEvents);
     }
 

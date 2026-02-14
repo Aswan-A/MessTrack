@@ -76,7 +76,7 @@
                     on:click={() => (eventType = "LEAVE")}
                     class="py-2.5 rounded-xl text-sm font-medium transition-colors {eventType ===
                     'LEAVE'
-                        ? 'bg-leaving text-black'
+                        ? 'bg-white text-black'
                         : 'bg-bg border border-border text-text-secondary hover:bg-card-hover'}"
                 >
                     Leave
@@ -85,7 +85,7 @@
                     on:click={() => (eventType = "RETURN")}
                     class="py-2.5 rounded-xl text-sm font-medium transition-colors {eventType ===
                     'RETURN'
-                        ? 'bg-returning text-white'
+                        ? 'border border-white text-white'
                         : 'bg-bg border border-border text-text-secondary hover:bg-card-hover'}"
                 >
                     Return

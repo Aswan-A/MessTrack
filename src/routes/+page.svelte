@@ -107,9 +107,9 @@
             <span class="text-white font-medium">{$settings.X}+</span>
             consecutive full absent days qualify for mess reduction. Full absent
             = leave before
-            <span class="text-leaving font-medium">{$settings.Y_time}</span>
+            <span class="text-white font-medium">{$settings.Y_time}</span>
             or return after
-            <span class="text-returning font-medium">{$settings.Z_time}</span>.
+            <span class="text-white font-medium">{$settings.Z_time}</span>.
         </p>
     </div>
 </div>

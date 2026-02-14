@@ -43,33 +43,25 @@
 				: "You are currently away from hostel"}
 	</p>
 
-	{#if isNoData}
-		<button
-			on:click={() => dispatch("action")}
-			class="w-full py-3 px-4 rounded-xl font-medium text-sm bg-white text-black hover:bg-gray-200 transition-colors active:scale-[0.98]"
-		>
-			Add First Event
-		</button>
-	{:else if nextType === "LEAVE"}
-		<button
-			on:click={() => dispatch("action")}
-			class="w-full py-3 px-4 rounded-xl font-medium text-sm bg-leaving text-black hover:brightness-90 transition-all active:scale-[0.98]"
-		>
-			Mark as Leaving
-		</button>
-	{:else if nextType === "RETURN"}
-		<button
-			on:click={() => dispatch("action")}
-			class="w-full py-3 px-4 rounded-xl font-medium text-sm bg-returning text-white hover:brightness-90 transition-all active:scale-[0.98]"
-		>
-			Mark as Returned
-		</button>
-	{:else}
-		<button
-			on:click={() => dispatch("action")}
-			class="w-full py-3 px-4 rounded-xl font-medium text-sm bg-white text-black hover:bg-gray-200 transition-colors active:scale-[0.98]"
-		>
-			{isPresent ? "Mark as Leaving" : "Mark as Returned"}
-		</button>
-	{/if}
+	<button
+		on:click={() => dispatch("action")}
+		class="w-full py-3 px-4 rounded-xl font-medium text-sm transition-colors active:scale-[0.98]
+			{isNoData
+			? 'bg-white text-black hover:bg-gray-200'
+			: nextType === 'LEAVE'
+				? 'bg-white text-black hover:bg-gray-200'
+				: nextType === 'RETURN'
+					? 'border border-white text-white hover:bg-white hover:text-black'
+					: 'bg-white text-black hover:bg-gray-200'}"
+	>
+		{isNoData
+			? "Add First Event"
+			: nextType === "LEAVE"
+				? "Mark as Leaving"
+				: nextType === "RETURN"
+					? "Mark as Returned"
+					: isPresent
+						? "Mark as Leaving"
+						: "Mark as Returned"}
+	</button>
 </div>

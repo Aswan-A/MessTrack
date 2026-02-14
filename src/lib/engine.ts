@@ -405,3 +405,26 @@ export function getConflictingEventIds(
 
     return toDelete;
 }
+
+/**
+ * After deleting an event, find any adjacent same-type pairs that resulted
+ * from the deletion, and return the IDs of the later duplicates to also delete.
+ *
+ * Example: RETURN(1) → LEAVE(5) → RETURN(10)
+ *   Delete LEAVE(5) → RETURN(1) → RETURN(10) — conflict!
+ *   Returns [RETURN(10).id] so the later duplicate is removed.
+ */
+export function getPostDeleteConflicts(
+    remainingEvents: HostelEvent[]
+): string[] {
+    const sorted = [...remainingEvents].sort((a, b) => a.timestamp - b.timestamp);
+    const toDelete: string[] = [];
+
+    for (let i = 1; i < sorted.length; i++) {
+        if (sorted[i].type === sorted[i - 1].type) {
+            toDelete.push(sorted[i].id);
+        }
+    }
+
+    return toDelete;
+}

@@ -7,12 +7,16 @@
     import {
         updateEvent as dbUpdateEvent,
         deleteEvent as dbDeleteEvent,
+        addEvent as dbAddEvent,
         getAllEvents,
     } from "$lib/db";
+    import { v4 as uuid } from "uuid";
     import type { DayStatus, HostelEvent } from "$lib/types";
 
     let selectedDay: { day: number; status: DayStatus } | null = null;
     let editingEvent: HostelEvent | null = null;
+    let showAddEditor = false;
+    let addDefaultDate = "";
 
     $: monthData = calculateMonth(
         $events,
@@ -52,6 +56,38 @@
         selectedDay = null;
     }
 
+    function handleAddFromDay(
+        e: CustomEvent<{ day: number; month: number; year: number }>,
+    ) {
+        const { day, month, year } = e.detail;
+        // Format as YYYY-MM-DD
+        const m = String(month + 1).padStart(2, "0");
+        const d = String(day).padStart(2, "0");
+        addDefaultDate = `${year}-${m}-${d}`;
+        showAddEditor = true;
+        selectedDay = null;
+    }
+
+    async function saveNewEvent(
+        e: CustomEvent<{
+            type: "LEAVE" | "RETURN";
+            timestamp: number;
+        }>,
+    ) {
+        const now = Date.now();
+        await dbAddEvent({
+            id: uuid(),
+            type: e.detail.type,
+            timestamp: e.detail.timestamp,
+            createdAt: now,
+            updatedAt: now,
+        });
+        const allEvents = await getAllEvents();
+        events.set(allEvents);
+        showAddEditor = false;
+        addDefaultDate = "";
+    }
+
     async function saveEditedEvent(
         e: CustomEvent<{
             type: "LEAVE" | "RETURN";
@@ -78,7 +114,7 @@
     <div>
         <h1 class="text-2xl font-bold">Calendar</h1>
         <p class="text-text-muted text-sm mt-0.5">
-            Monthly attendance overview
+            Tap any date to view or add events
         </p>
     </div>
 
@@ -133,6 +169,7 @@
         on:close={closeModal}
         on:editEvent={handleEditEvent}
         on:deleteEvent={handleDeleteEvent}
+        on:addEvent={handleAddFromDay}
     />
 {/if}
 
@@ -142,5 +179,18 @@
         mode="edit"
         on:save={saveEditedEvent}
         on:cancel={() => (editingEvent = null)}
+    />
+{/if}
+
+{#if showAddEditor}
+    <EventEditor
+        event={null}
+        mode="add"
+        defaultDate={addDefaultDate}
+        on:save={saveNewEvent}
+        on:cancel={() => {
+            showAddEditor = false;
+            addDefaultDate = "";
+        }}
     />
 {/if}

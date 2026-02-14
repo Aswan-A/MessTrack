@@ -288,3 +288,77 @@ export function getMonthSummary(
         messReductionDays: messReductionDays.size
     };
 }
+
+/**
+ * Get what the next valid event type should be.
+ * LEAVE and RETURN must alternate. First event can be either.
+ * If excludeId is provided, that event is ignored (for editing).
+ */
+export function getNextValidEventType(
+    events: HostelEvent[],
+    atTimestamp: number,
+    excludeId?: string
+): 'LEAVE' | 'RETURN' | 'BOTH' {
+    const filtered = excludeId
+        ? events.filter(e => e.id !== excludeId)
+        : events;
+
+    const sorted = [...filtered].sort((a, b) => a.timestamp - b.timestamp);
+
+    if (sorted.length === 0) return 'BOTH';
+
+    // Find the last event before atTimestamp
+    const before = sorted.filter(e => e.timestamp <= atTimestamp);
+    // Find the first event after atTimestamp
+    const after = sorted.filter(e => e.timestamp > atTimestamp);
+
+    const lastBefore = before.length > 0 ? before[before.length - 1] : null;
+    const firstAfter = after.length > 0 ? after[0] : null;
+
+    // Must not create same type as adjacent events
+    if (lastBefore && firstAfter) {
+        // Sandwiched between two events
+        if (lastBefore.type === firstAfter.type) {
+            // Both same type → only the opposite is valid
+            return lastBefore.type === 'LEAVE' ? 'RETURN' : 'LEAVE';
+        }
+        // They differ → the one that fits the sequence
+        return lastBefore.type === 'LEAVE' ? 'RETURN' : 'LEAVE';
+    }
+
+    if (lastBefore) {
+        // Only events before → must be opposite of last
+        return lastBefore.type === 'LEAVE' ? 'RETURN' : 'LEAVE';
+    }
+
+    if (firstAfter) {
+        // Only events after → must be opposite of first after
+        return firstAfter.type === 'LEAVE' ? 'RETURN' : 'LEAVE';
+    }
+
+    return 'BOTH';
+}
+
+/**
+ * Check if a timestamp is in the future (beyond current moment).
+ */
+export function isFutureTimestamp(timestamp: number): boolean {
+    return timestamp > Date.now();
+}
+
+/**
+ * Check if a day (year, month, day) is in the future.
+ */
+export function isFutureDay(year: number, month: number, day: number): boolean {
+    const now = new Date();
+    const target = new Date(year, month, day);
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    return target > today;
+}
+
+/**
+ * Get the state at a specific timestamp (exported for use by components).
+ */
+export function getStateAt(events: HostelEvent[], timestamp: number): 'PRESENT' | 'ABSENT' | null {
+    return getStateAtTime(events, timestamp);
+}

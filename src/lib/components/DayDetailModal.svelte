@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { DayStatus, HostelEvent } from "$lib/types";
+    import { isFutureDay } from "$lib/engine";
     import { createEventDispatcher } from "svelte";
 
     export let day: number;
@@ -23,6 +24,8 @@
         "Nov",
         "Dec",
     ];
+
+    $: future = isFutureDay(year, month, day);
 
     function classLabel(c: string): string {
         switch (c) {
@@ -129,7 +132,7 @@
 
         <!-- Events -->
         {#if status.events.length > 0}
-            <div class="space-y-2">
+            <div class="space-y-2 mb-3">
                 <p
                     class="text-xs font-medium text-text-muted uppercase tracking-wide"
                 >
@@ -172,9 +175,19 @@
                 {/each}
             </div>
         {:else}
-            <p class="text-sm text-text-muted py-4 text-center">
+            <p class="text-sm text-text-muted py-3 text-center">
                 No events on this day
             </p>
+        {/if}
+
+        <!-- Add Event button (only non-future days) -->
+        {#if !future}
+            <button
+                on:click={() => dispatch("addEvent", { day, month, year })}
+                class="w-full mt-2 py-2.5 px-4 rounded-xl text-sm font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/15 transition-colors"
+            >
+                + Add Event on This Day
+            </button>
         {/if}
     </div>
 </div>

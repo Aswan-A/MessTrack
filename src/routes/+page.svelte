@@ -1,16 +1,17 @@
 <script lang="ts">
     import StatusCard from "$lib/components/StatusCard.svelte";
-    import TimePicker from "$lib/components/TimePicker.svelte";
+    import EventEditor from "$lib/components/EventEditor.svelte";
     import { events, settings, selectedMonth, selectedYear } from "$lib/stores";
     import { addEvent as dbAddEvent, getAllEvents } from "$lib/db";
     import {
         calculateMonth,
         getMonthSummary,
         getCurrentState,
+        getNextValidEventType,
     } from "$lib/engine";
     import { v4 as uuid } from "uuid";
 
-    let showTimePicker = false;
+    let showEditor = false;
 
     // Reactive month calculation
     $: monthData = calculateMonth(
@@ -24,18 +25,20 @@
         monthData.messReductionDays,
     );
     $: currentState = getCurrentState($events);
+    $: nextType = getNextValidEventType($events, Date.now());
 
     async function handleAction() {
-        showTimePicker = true;
+        showEditor = true;
     }
 
-    async function confirmEvent(e: CustomEvent<{ timestamp: number }>) {
-        const eventType = currentState === "PRESENT" ? "LEAVE" : "RETURN";
+    async function confirmEvent(
+        e: CustomEvent<{ type: "LEAVE" | "RETURN"; timestamp: number }>,
+    ) {
         const now = Date.now();
 
         const newEvent = {
             id: uuid(),
-            type: eventType as "LEAVE" | "RETURN",
+            type: e.detail.type,
             timestamp: e.detail.timestamp,
             createdAt: now,
             updatedAt: now,
@@ -44,11 +47,7 @@
         await dbAddEvent(newEvent);
         const allEvents = await getAllEvents();
         events.set(allEvents);
-        showTimePicker = false;
-    }
-
-    function cancelTimePicker() {
-        showTimePicker = false;
+        showEditor = false;
     }
 
     const MONTH_NAMES = [
@@ -132,10 +131,12 @@
     </div>
 </div>
 
-{#if showTimePicker}
-    <TimePicker
-        defaultTimestamp={Date.now()}
-        on:confirm={confirmEvent}
-        on:cancel={cancelTimePicker}
+{#if showEditor}
+    <EventEditor
+        event={null}
+        mode="add"
+        forceType={nextType === "BOTH" ? null : nextType}
+        on:save={confirmEvent}
+        on:cancel={() => (showEditor = false)}
     />
 {/if}

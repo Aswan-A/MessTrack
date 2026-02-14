@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte";
-	import { currentStatus } from "$lib/stores";
+	import { currentStatus, events as eventsStore } from "$lib/stores";
+	import { getNextValidEventType } from "$lib/engine";
 
 	const dispatch = createEventDispatcher();
 
 	$: status = $currentStatus;
 	$: isPresent = status === "PRESENT";
 	$: isNoData = status === "NO_DATA";
+	$: nextType = getNextValidEventType($eventsStore, Date.now());
 </script>
 
 <div
@@ -49,25 +51,33 @@
 	</p>
 
 	<!-- Action button -->
-	{#if !isNoData}
+	{#if isNoData}
 		<button
 			on:click={() => dispatch("action")}
-			class="w-full py-3 px-4 rounded-xl font-medium text-sm transition-all active:scale-[0.98] {isPresent
-				? 'bg-leaving/15 text-leaving border border-leaving/20 hover:bg-leaving/20'
-				: 'bg-returning/15 text-returning border border-returning/20 hover:bg-returning/20'}"
+			class="w-full py-3 px-4 rounded-xl font-medium text-sm bg-primary/15 text-primary border border-primary/20 hover:bg-primary/20 transition-all active:scale-[0.98]"
 		>
-			{#if isPresent}
-				Mark as Leaving
-			{:else}
-				Mark as Returned
-			{/if}
+			Add First Event
+		</button>
+	{:else if nextType === "LEAVE"}
+		<button
+			on:click={() => dispatch("action")}
+			class="w-full py-3 px-4 rounded-xl font-medium text-sm bg-leaving/15 text-leaving border border-leaving/20 hover:bg-leaving/20 transition-all active:scale-[0.98]"
+		>
+			Mark as Leaving
+		</button>
+	{:else if nextType === "RETURN"}
+		<button
+			on:click={() => dispatch("action")}
+			class="w-full py-3 px-4 rounded-xl font-medium text-sm bg-returning/15 text-returning border border-returning/20 hover:bg-returning/20 transition-all active:scale-[0.98]"
+		>
+			Mark as Returned
 		</button>
 	{:else}
 		<button
 			on:click={() => dispatch("action")}
 			class="w-full py-3 px-4 rounded-xl font-medium text-sm bg-primary/15 text-primary border border-primary/20 hover:bg-primary/20 transition-all active:scale-[0.98]"
 		>
-			Add First Event
+			{isPresent ? "Mark as Leaving" : "Mark as Returned"}
 		</button>
 	{/if}
 </div>

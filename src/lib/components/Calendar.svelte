@@ -1,6 +1,7 @@
 <script lang="ts">
     import DayCell from "./DayCell.svelte";
     import type { DayStatus } from "$lib/types";
+    import { isFutureDay } from "$lib/engine";
     import { createEventDispatcher } from "svelte";
 
     export let year: number;
@@ -115,6 +116,7 @@
             {day}
             status={dayStatuses.get(day)}
             isToday={isCurrentMonth && today.getDate() === day}
+            isFuture={isFutureDay(year, month, day)}
             on:select
         />
     {/each}

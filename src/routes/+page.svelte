@@ -1,6 +1,5 @@
 <script lang="ts">
     import StatusCard from "$lib/components/StatusCard.svelte";
-    import EventEditor from "$lib/components/EventEditor.svelte";
     import { events, settings, selectedMonth, selectedYear } from "$lib/stores";
     import { addEvent as dbAddEvent, getAllEvents } from "$lib/db";
     import {
@@ -10,8 +9,6 @@
         getNextValidEventType,
     } from "$lib/engine";
     import { v4 as uuid } from "uuid";
-
-    let showEditor = false;
 
     $: monthData = calculateMonth(
         $events,
@@ -27,23 +24,23 @@
     $: nextType = getNextValidEventType($events, Date.now());
 
     async function handleAction() {
-        showEditor = true;
-    }
-
-    async function confirmEvent(
-        e: CustomEvent<{ type: "LEAVE" | "RETURN"; timestamp: number }>,
-    ) {
         const now = Date.now();
+        const type =
+            nextType === "BOTH"
+                ? currentState === "PRESENT"
+                    ? "LEAVE"
+                    : "RETURN"
+                : nextType;
+
         await dbAddEvent({
             id: uuid(),
-            type: e.detail.type,
-            timestamp: e.detail.timestamp,
+            type,
+            timestamp: now,
             createdAt: now,
             updatedAt: now,
         });
         const allEvents = await getAllEvents();
         events.set(allEvents);
-        showEditor = false;
     }
 
     const MONTH_NAMES = [
@@ -116,13 +113,3 @@
         </p>
     </div>
 </div>
-
-{#if showEditor}
-    <EventEditor
-        event={null}
-        mode="add"
-        forceType={nextType === "BOTH" ? null : nextType}
-        on:save={confirmEvent}
-        on:cancel={() => (showEditor = false)}
-    />
-{/if}

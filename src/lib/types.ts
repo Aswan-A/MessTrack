@@ -33,7 +33,7 @@ export interface LeaveBlock {
 
 export const DEFAULT_SETTINGS: Settings = {
     X: 3,
-    Y_time: '09:00',
-    Z_time: '17:00',
+    Y_time: '07:00',
+    Z_time: '21:00',
     updatedAt: Date.now()
 };

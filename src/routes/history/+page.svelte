@@ -2,6 +2,7 @@
     import EventTimeline from "$lib/components/EventTimeline.svelte";
     import EventEditor from "$lib/components/EventEditor.svelte";
     import { events } from "$lib/stores";
+    import { getConflictingEventIds } from "$lib/engine";
     import {
         addEvent as dbAddEvent,
         updateEvent as dbUpdateEvent,
@@ -37,6 +38,15 @@
         const now = Date.now();
 
         if (editorMode === "add") {
+            // Auto-delete conflicting same-type neighbors
+            const conflicts = getConflictingEventIds(
+                $events,
+                e.detail.type,
+                e.detail.timestamp,
+            );
+            for (const id of conflicts) {
+                await dbDeleteEvent(id);
+            }
             await dbAddEvent({
                 id: uuid(),
                 type: e.detail.type,
@@ -47,6 +57,16 @@
         } else if (e.detail.id) {
             const existing = $events.find((ev) => ev.id === e.detail.id);
             if (existing) {
+                // Auto-delete conflicting same-type neighbors (excluding the event being edited)
+                const conflicts = getConflictingEventIds(
+                    $events,
+                    e.detail.type,
+                    e.detail.timestamp,
+                    e.detail.id,
+                );
+                for (const id of conflicts) {
+                    await dbDeleteEvent(id);
+                }
                 await dbUpdateEvent({
                     ...existing,
                     type: e.detail.type,

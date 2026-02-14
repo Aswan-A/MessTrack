@@ -3,7 +3,11 @@
     import DayDetailModal from "$lib/components/DayDetailModal.svelte";
     import EventEditor from "$lib/components/EventEditor.svelte";
     import { events, settings, selectedYear, selectedMonth } from "$lib/stores";
-    import { calculateMonth, getMonthSummary } from "$lib/engine";
+    import {
+        calculateMonth,
+        getMonthSummary,
+        getConflictingEventIds,
+    } from "$lib/engine";
     import {
         updateEvent as dbUpdateEvent,
         deleteEvent as dbDeleteEvent,
@@ -71,6 +75,15 @@
         e: CustomEvent<{ type: "LEAVE" | "RETURN"; timestamp: number }>,
     ) {
         const now = Date.now();
+        // Auto-delete conflicting same-type neighbors
+        const conflicts = getConflictingEventIds(
+            $events,
+            e.detail.type,
+            e.detail.timestamp,
+        );
+        for (const id of conflicts) {
+            await dbDeleteEvent(id);
+        }
         await dbAddEvent({
             id: uuid(),
             type: e.detail.type,
@@ -93,6 +106,16 @@
     ) {
         const existing = $events.find((ev) => ev.id === e.detail.id);
         if (existing) {
+            // Auto-delete conflicting same-type neighbors (excluding the event being edited)
+            const conflicts = getConflictingEventIds(
+                $events,
+                e.detail.type,
+                e.detail.timestamp,
+                e.detail.id,
+            );
+            for (const id of conflicts) {
+                await dbDeleteEvent(id);
+            }
             await dbUpdateEvent({
                 ...existing,
                 type: e.detail.type,

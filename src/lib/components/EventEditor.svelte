@@ -39,7 +39,6 @@
     }
 
     $: isFuture = isFutureTimestamp(timestamp);
-    $: isNotRecommended = recommended !== "BOTH" && eventType !== recommended;
 
     function save() {
         if (isFuture) return;
@@ -71,11 +70,6 @@
         <div class="mb-4">
             <p class="text-xs font-medium text-text-secondary mb-2">
                 Event Type
-                {#if recommended !== "BOTH"}
-                    <span class="text-text-secondary"
-                        >· {recommended === "LEAVE" ? "Leave" : "Return"} recommended</span
-                    >
-                {/if}
             </p>
             <div class="grid grid-cols-2 gap-2">
                 <button
@@ -97,13 +91,6 @@
                     Return
                 </button>
             </div>
-
-            {#if isNotRecommended}
-                <p class="text-leaving text-xs mt-2">
-                    ⚠ Sequence mismatch — you may need to add another event to
-                    keep alternation correct
-                </p>
-            {/if}
         </div>
 
         <div class="space-y-3 mb-4">

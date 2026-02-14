@@ -362,3 +362,46 @@ export function isFutureDay(year: number, month: number, day: number): boolean {
 export function getStateAt(events: HostelEvent[], timestamp: number): 'PRESENT' | 'ABSENT' | null {
     return getStateAtTime(events, timestamp);
 }
+
+/**
+ * Find event IDs that conflict with a newly inserted event.
+ * If the immediate previous or next event has the same type as the new event,
+ * it should be auto-deleted to maintain LEAVE/RETURN alternation.
+ *
+ * Example: LEAVE(1) → RETURN(10), insert RETURN(4)
+ *   → RETURN(10) is same type as inserted → auto-delete it
+ *   → Result: LEAVE(1) → RETURN(4)
+ */
+export function getConflictingEventIds(
+    events: HostelEvent[],
+    newType: 'LEAVE' | 'RETURN',
+    newTimestamp: number,
+    excludeId?: string
+): string[] {
+    const filtered = excludeId
+        ? events.filter(e => e.id !== excludeId)
+        : events;
+
+    const sorted = [...filtered].sort((a, b) => a.timestamp - b.timestamp);
+    const toDelete: string[] = [];
+
+    // Find immediate previous event
+    const before = sorted.filter(e => e.timestamp < newTimestamp);
+    if (before.length > 0) {
+        const prevEvent = before[before.length - 1];
+        if (prevEvent.type === newType) {
+            toDelete.push(prevEvent.id);
+        }
+    }
+
+    // Find immediate next event
+    const after = sorted.filter(e => e.timestamp > newTimestamp);
+    if (after.length > 0) {
+        const nextEvent = after[0];
+        if (nextEvent.type === newType) {
+            toDelete.push(nextEvent.id);
+        }
+    }
+
+    return toDelete;
+}

@@ -136,14 +136,14 @@
     }
 </script>
 
-<div class="space-y-6 animate-fade-in">
-    <div>
-        <h1 class="text-2xl font-bold">Calendar</h1>
-        <p class="text-text-secondary text-sm mt-0.5">
-            Tap any date to view or add events
-        </p>
-    </div>
+<div class="sticky top-0 z-10 bg-bg pt-6 pb-3">
+    <h1 class="text-2xl font-bold">Calendar</h1>
+    <p class="text-text-secondary text-sm mt-0.5">
+        Tap any date to view or add events
+    </p>
+</div>
 
+<div class="space-y-4 pb-24 animate-fade-in">
     <div class="flex gap-2 overflow-x-auto pb-1">
         <div
             class="flex-shrink-0 px-3 py-2 rounded-xl bg-card border border-border"

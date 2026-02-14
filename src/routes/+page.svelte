@@ -59,14 +59,14 @@
     ];
 </script>
 
-<div class="space-y-5 animate-fade-in">
-    <div>
-        <h1 class="text-2xl font-bold">Dashboard</h1>
-        <p class="text-text-secondary text-sm mt-0.5">
-            Track your hostel attendance
-        </p>
-    </div>
+<div class="sticky top-0 z-10 bg-bg pt-6 pb-3">
+    <h1 class="text-2xl font-bold">Dashboard</h1>
+    <p class="text-text-secondary text-sm mt-0.5">
+        Track your hostel attendance
+    </p>
+</div>
 
+<div class="space-y-5 pb-24 animate-fade-in">
     <StatusCard on:action={handleAction} />
 
     <div class="rounded-2xl bg-card border border-border p-5">

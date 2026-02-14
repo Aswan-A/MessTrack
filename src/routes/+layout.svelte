@@ -54,8 +54,8 @@
 		</div>
 	</div>
 {:else}
-	<div class="min-h-dvh pb-20">
-		<main class="max-w-lg mx-auto px-4 pt-6">
+	<div class="h-dvh flex flex-col overflow-hidden">
+		<main class="flex-1 overflow-y-auto max-w-lg mx-auto w-full px-4">
 			<slot />
 		</main>
 

@@ -103,37 +103,37 @@
     }
 </script>
 
-<div class="space-y-6 animate-fade-in">
-    <div class="flex items-center justify-between">
-        <div>
-            <h1 class="text-2xl font-bold">History</h1>
-            <p class="text-text-secondary text-sm mt-0.5">
-                All attendance events
-            </p>
-        </div>
-        <button
-            on:click={openAddEditor}
-            class="w-10 h-10 rounded-xl bg-white text-black flex items-center justify-center hover:bg-gray-200 transition-colors active:scale-95"
-            aria-label="Add event"
-        >
-            <svg
-                class="w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2.5"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M12 4v16m8-8H4"
-                />
-            </svg>
-        </button>
+<div
+    class="sticky top-0 z-10 bg-bg pt-6 pb-3 flex items-center justify-between"
+>
+    <div>
+        <h1 class="text-2xl font-bold">History</h1>
+        <p class="text-text-secondary text-sm mt-0.5">All attendance events</p>
     </div>
+    <button
+        on:click={openAddEditor}
+        class="w-10 h-10 rounded-xl bg-white text-black flex items-center justify-center hover:bg-gray-200 transition-colors active:scale-95"
+        aria-label="Add event"
+    >
+        <svg
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2.5"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+            />
+        </svg>
+    </button>
+</div>
 
+<div class="pb-24 animate-fade-in">
     {#if $events.length > 0}
-        <p class="text-xs text-text-secondary">
+        <p class="text-xs text-text-secondary mb-3">
             {$events.length} event{$events.length !== 1 ? "s" : ""} recorded
         </p>
     {/if}

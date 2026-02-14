@@ -47,14 +47,12 @@
     }
 </script>
 
-<div class="space-y-6 animate-fade-in">
-    <div>
-        <h1 class="text-2xl font-bold">Settings</h1>
-        <p class="text-text-secondary text-sm mt-0.5">
-            Configure attendance rules
-        </p>
-    </div>
+<div class="sticky top-0 z-10 bg-bg pt-6 pb-3">
+    <h1 class="text-2xl font-bold">Settings</h1>
+    <p class="text-text-secondary text-sm mt-0.5">Configure attendance rules</p>
+</div>
 
+<div class="space-y-6 pb-24 animate-fade-in">
     <!-- Attendance Rules -->
     <div class="rounded-2xl bg-card border border-border p-5 space-y-4">
         <h3

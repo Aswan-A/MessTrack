@@ -140,13 +140,13 @@
                 on:click={handleDownload}
                 class="flex-1 py-3 px-4 rounded-xl font-medium text-sm bg-bg border border-border hover:bg-card-hover transition-colors"
             >
-                📥 Download
+                Download
             </button>
             <button
                 on:click={() => fileInput.click()}
                 class="flex-1 py-3 px-4 rounded-xl font-medium text-sm bg-bg border border-border hover:bg-card-hover transition-colors"
             >
-                📤 Upload
+                Upload
             </button>
         </div>
 

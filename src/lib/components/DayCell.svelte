@@ -16,13 +16,11 @@
 	function getBg(c: string): string {
 		switch (c) {
 			case "PRESENT":
+			case "LEAVING":
+			case "RETURNING":
 				return "bg-present text-black";
 			case "ABSENT":
 				return "bg-absent text-white";
-			case "LEAVING":
-				return "bg-leaving text-black";
-			case "RETURNING":
-				return "bg-returning text-white";
 			default:
 				return "bg-card text-text-secondary";
 		}
@@ -42,6 +40,17 @@
 	disabled={isFuture}
 >
 	{day}
+	{#if classification === "LEAVING"}
+		<span
+			class="absolute top-0.5 right-0.5 text-[7px] leading-none text-black/60"
+			>↗</span
+		>
+	{:else if classification === "RETURNING"}
+		<span
+			class="absolute top-0.5 right-0.5 text-[7px] leading-none text-black/60"
+			>↙</span
+		>
+	{/if}
 	{#if isEligible}
 		<span
 			class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-mess-cut"

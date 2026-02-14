@@ -124,13 +124,21 @@
         ><span class="w-2.5 h-2.5 rounded-sm bg-present"></span> Present</span
     >
     <span class="flex items-center gap-1.5"
+        ><span class="w-2.5 h-2.5 rounded-sm bg-present relative"
+            ><span class="absolute -top-px -right-px text-[5px] text-black/60"
+                >↗</span
+            ></span
+        > Leaving</span
+    >
+    <span class="flex items-center gap-1.5"
+        ><span class="w-2.5 h-2.5 rounded-sm bg-present relative"
+            ><span class="absolute -top-px -right-px text-[5px] text-black/60"
+                >↙</span
+            ></span
+        > Returning</span
+    >
+    <span class="flex items-center gap-1.5"
         ><span class="w-2.5 h-2.5 rounded-sm bg-absent"></span> Absent</span
-    >
-    <span class="flex items-center gap-1.5"
-        ><span class="w-2.5 h-2.5 rounded-sm bg-leaving"></span> Leaving</span
-    >
-    <span class="flex items-center gap-1.5"
-        ><span class="w-2.5 h-2.5 rounded-sm bg-returning"></span> Returning</span
     >
     <span class="flex items-center gap-1.5"
         ><span class="w-2.5 h-2.5 rounded-full bg-mess-cut"></span> Mess Cut</span

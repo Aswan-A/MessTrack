@@ -257,6 +257,8 @@ export function getCurrentState(events: HostelEvent[]): 'PRESENT' | 'ABSENT' | '
 
 /**
  * Get summary statistics for a month.
+ * LEAVING and RETURNING days count as PRESENT (you were there part of the day).
+ * Only full absent days (per Y/Z rules) count as absent.
  */
 export function getMonthSummary(
     dayStatuses: Map<number, DayStatus>,
@@ -273,9 +275,11 @@ export function getMonthSummary(
         } else if (status.isFullAbsent) {
             fullAbsentDays++;
             absentDays++;
-        } else if (status.classification === 'ABSENT' || status.classification === 'LEAVING' || status.classification === 'RETURNING') {
+        } else if (status.classification === 'ABSENT') {
+            // Partial absent without full-absent flag — still count as absent
             absentDays++;
         } else {
+            // PRESENT, LEAVING, RETURNING — all count as present
             presentDays++;
         }
     }

@@ -42,12 +42,12 @@
 	{day}
 	{#if classification === "LEAVING"}
 		<span
-			class="absolute top-0.5 right-0.5 text-[7px] leading-none text-black/60"
+			class="absolute bottom-0 right-0.5 text-[9px] font-bold leading-none text-black/70"
 			>↗</span
 		>
 	{:else if classification === "RETURNING"}
 		<span
-			class="absolute top-0.5 right-0.5 text-[7px] leading-none text-black/60"
+			class="absolute bottom-0 right-0.5 text-[9px] font-bold leading-none text-black/70"
 			>↙</span
 		>
 	{/if}

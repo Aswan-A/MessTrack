@@ -53,11 +53,10 @@
     }
 </script>
 
-<!-- Month navigation -->
 <div class="flex items-center justify-between mb-4">
     <button
         on:click={prevMonth}
-        class="w-8 h-8 rounded-lg flex items-center justify-center text-text-muted hover:text-text hover:bg-surface-lighter/50 transition-colors"
+        class="w-8 h-8 rounded-lg flex items-center justify-center text-text-secondary hover:text-white hover:bg-card-hover transition-colors"
         aria-label="Previous month"
     >
         <svg
@@ -77,7 +76,7 @@
     <h2 class="text-base font-semibold">{MONTHS[month]} {year}</h2>
     <button
         on:click={nextMonth}
-        class="w-8 h-8 rounded-lg flex items-center justify-center text-text-muted hover:text-text hover:bg-surface-lighter/50 transition-colors"
+        class="w-8 h-8 rounded-lg flex items-center justify-center text-text-secondary hover:text-white hover:bg-card-hover transition-colors"
         aria-label="Next month"
     >
         <svg
@@ -96,16 +95,14 @@
     </button>
 </div>
 
-<!-- Weekday headers -->
 <div class="grid grid-cols-7 gap-1 mb-1">
     {#each WEEKDAYS as day}
-        <div class="text-center text-xs font-medium text-text-muted py-1">
+        <div class="text-center text-xs font-medium text-text-secondary py-1">
             {day}
         </div>
     {/each}
 </div>
 
-<!-- Day grid -->
 <div class="grid grid-cols-7 gap-1">
     {#each Array(firstDayOfWeek) as _}
         <div></div>
@@ -122,19 +119,18 @@
     {/each}
 </div>
 
-<!-- Legend -->
-<div class="flex flex-wrap gap-x-4 gap-y-1 mt-4 text-xs text-text-muted">
+<div class="flex flex-wrap gap-x-4 gap-y-1 mt-4 text-xs text-text-secondary">
     <span class="flex items-center gap-1.5"
-        ><span class="w-2.5 h-2.5 rounded-sm bg-present/40"></span> Present</span
+        ><span class="w-2.5 h-2.5 rounded-sm bg-present"></span> Present</span
     >
     <span class="flex items-center gap-1.5"
-        ><span class="w-2.5 h-2.5 rounded-sm bg-absent/40"></span> Absent</span
+        ><span class="w-2.5 h-2.5 rounded-sm bg-absent"></span> Absent</span
     >
     <span class="flex items-center gap-1.5"
-        ><span class="w-2.5 h-2.5 rounded-sm bg-leaving/40"></span> Leaving</span
+        ><span class="w-2.5 h-2.5 rounded-sm bg-leaving"></span> Leaving</span
     >
     <span class="flex items-center gap-1.5"
-        ><span class="w-2.5 h-2.5 rounded-sm bg-returning/40"></span> Returning</span
+        ><span class="w-2.5 h-2.5 rounded-sm bg-returning"></span> Returning</span
     >
     <span class="flex items-center gap-1.5"
         ><span class="w-2.5 h-2.5 rounded-full bg-mess-cut"></span> Mess Cut</span

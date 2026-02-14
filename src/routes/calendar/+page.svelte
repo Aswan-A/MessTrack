@@ -60,7 +60,6 @@
         e: CustomEvent<{ day: number; month: number; year: number }>,
     ) {
         const { day, month, year } = e.detail;
-        // Format as YYYY-MM-DD
         const m = String(month + 1).padStart(2, "0");
         const d = String(day).padStart(2, "0");
         addDefaultDate = `${year}-${m}-${d}`;
@@ -69,10 +68,7 @@
     }
 
     async function saveNewEvent(
-        e: CustomEvent<{
-            type: "LEAVE" | "RETURN";
-            timestamp: number;
-        }>,
+        e: CustomEvent<{ type: "LEAVE" | "RETURN"; timestamp: number }>,
     ) {
         const now = Date.now();
         await dbAddEvent({
@@ -113,43 +109,39 @@
 <div class="space-y-6 animate-fade-in">
     <div>
         <h1 class="text-2xl font-bold">Calendar</h1>
-        <p class="text-text-muted text-sm mt-0.5">
+        <p class="text-text-secondary text-sm mt-0.5">
             Tap any date to view or add events
         </p>
     </div>
 
-    <!-- Summary strip -->
     <div class="flex gap-2 overflow-x-auto pb-1">
         <div
-            class="flex-shrink-0 px-3 py-2 rounded-xl bg-present/10 border border-present/10"
+            class="flex-shrink-0 px-3 py-2 rounded-xl bg-card border border-border"
         >
             <span class="text-sm font-bold text-present"
                 >{summary.presentDays}</span
             >
-            <span class="text-xs text-text-muted ml-1">Present</span>
+            <span class="text-xs text-text-secondary ml-1">Present</span>
         </div>
         <div
-            class="flex-shrink-0 px-3 py-2 rounded-xl bg-absent/10 border border-absent/10"
+            class="flex-shrink-0 px-3 py-2 rounded-xl bg-card border border-border"
         >
             <span class="text-sm font-bold text-absent"
                 >{summary.fullAbsentDays}</span
             >
-            <span class="text-xs text-text-muted ml-1">Absent</span>
+            <span class="text-xs text-text-secondary ml-1">Absent</span>
         </div>
         <div
-            class="flex-shrink-0 px-3 py-2 rounded-xl bg-mess-cut/10 border border-mess-cut/10"
+            class="flex-shrink-0 px-3 py-2 rounded-xl bg-card border border-border"
         >
             <span class="text-sm font-bold text-mess-cut"
                 >{summary.messReductionDays}</span
             >
-            <span class="text-xs text-text-muted ml-1">Mess Cut</span>
+            <span class="text-xs text-text-secondary ml-1">Mess Cut</span>
         </div>
     </div>
 
-    <!-- Calendar -->
-    <div
-        class="rounded-2xl bg-surface-light/50 border border-surface-lighter/30 p-4"
-    >
+    <div class="rounded-2xl bg-card border border-border p-4">
         <Calendar
             year={$selectedYear}
             month={$selectedMonth}

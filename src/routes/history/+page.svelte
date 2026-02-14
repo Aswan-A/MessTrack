@@ -78,11 +78,13 @@
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-2xl font-bold">History</h1>
-            <p class="text-text-muted text-sm mt-0.5">All attendance events</p>
+            <p class="text-text-secondary text-sm mt-0.5">
+                All attendance events
+            </p>
         </div>
         <button
             on:click={openAddEditor}
-            class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/20 hover:bg-primary-light hover:shadow-primary/30 transition-all active:scale-95"
+            class="w-10 h-10 rounded-xl bg-white text-black flex items-center justify-center hover:bg-gray-200 transition-colors active:scale-95"
             aria-label="Add event"
         >
             <svg
@@ -101,9 +103,8 @@
         </button>
     </div>
 
-    <!-- Event count -->
     {#if $events.length > 0}
-        <p class="text-xs text-text-muted">
+        <p class="text-xs text-text-secondary">
             {$events.length} event{$events.length !== 1 ? "s" : ""} recorded
         </p>
     {/if}

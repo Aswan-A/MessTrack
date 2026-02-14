@@ -11,7 +11,6 @@
 
     const dispatch = createEventDispatcher();
 
-    // Max date is today
     const todayStr = new Date().toISOString().slice(0, 10);
 
     let dateValue = event
@@ -21,20 +20,16 @@
         ? new Date(event.timestamp).toTimeString().slice(0, 5)
         : new Date().toTimeString().slice(0, 5);
 
-    // Compute timestamp from current date/time inputs
     $: timestamp = (() => {
         const [y, m, d] = dateValue.split("-").map(Number);
         const [h, min] = timeValue.split(":").map(Number);
         return new Date(y, m - 1, d, h, min).getTime();
     })();
 
-    // Determine recommended event type based on surrounding events
     $: recommended = getNextValidEventType($eventsStore, timestamp, event?.id);
 
-    // Event type selection
     let eventType: "LEAVE" | "RETURN" = forceType ?? event?.type ?? "LEAVE";
 
-    // Auto-select recommended type when it changes (but allow override)
     $: {
         if (forceType) {
             eventType = forceType;
@@ -57,14 +52,14 @@
 </script>
 
 <div
-    class="fixed inset-0 bg-black/60 z-50 flex items-end justify-center"
+    class="fixed inset-0 bg-black/80 z-50 flex items-end justify-center"
     on:click={() => dispatch("cancel")}
     on:keydown={(e) => e.key === "Escape" && dispatch("cancel")}
     role="dialog"
     tabindex="-1"
 >
     <div
-        class="w-full max-w-lg bg-surface-light rounded-t-2xl p-5 animate-slide-up"
+        class="w-full max-w-lg bg-card rounded-t-2xl p-5 animate-slide-up border-t border-border"
         on:click|stopPropagation
         on:keydown|stopPropagation
         role="document"
@@ -73,12 +68,11 @@
             {mode === "add" ? "Add Event" : "Edit Event"}
         </h3>
 
-        <!-- Event Type -->
         <div class="mb-4">
-            <p class="text-xs font-medium text-text-muted mb-2">
+            <p class="text-xs font-medium text-text-secondary mb-2">
                 Event Type
                 {#if recommended !== "BOTH"}
-                    <span class="text-primary/70"
+                    <span class="text-text-secondary"
                         >· {recommended === "LEAVE" ? "Leave" : "Return"} recommended</span
                     >
                 {/if}
@@ -88,8 +82,8 @@
                     on:click={() => (eventType = "LEAVE")}
                     class="py-2.5 rounded-xl text-sm font-medium transition-colors {eventType ===
                     'LEAVE'
-                        ? 'bg-leaving/15 text-leaving border border-leaving/30'
-                        : 'bg-surface border border-surface-lighter text-text-muted hover:bg-surface-lighter'}"
+                        ? 'bg-leaving text-black'
+                        : 'bg-bg border border-border text-text-secondary hover:bg-card-hover'}"
                 >
                     Leave
                 </button>
@@ -97,28 +91,26 @@
                     on:click={() => (eventType = "RETURN")}
                     class="py-2.5 rounded-xl text-sm font-medium transition-colors {eventType ===
                     'RETURN'
-                        ? 'bg-returning/15 text-returning border border-returning/30'
-                        : 'bg-surface border border-surface-lighter text-text-muted hover:bg-surface-lighter'}"
+                        ? 'bg-returning text-white'
+                        : 'bg-bg border border-border text-text-secondary hover:bg-card-hover'}"
                 >
                     Return
                 </button>
             </div>
 
-            <!-- Advisory warning -->
             {#if isNotRecommended}
-                <p class="text-leaving/70 text-xs mt-2">
+                <p class="text-leaving text-xs mt-2">
                     ⚠ Sequence mismatch — you may need to add another event to
                     keep alternation correct
                 </p>
             {/if}
         </div>
 
-        <!-- Date & Time -->
         <div class="space-y-3 mb-4">
             <div>
                 <label
                     for="event-date"
-                    class="block text-xs font-medium text-text-muted mb-1"
+                    class="block text-xs font-medium text-text-secondary mb-1"
                     >Date</label
                 >
                 <input
@@ -126,27 +118,26 @@
                     type="date"
                     bind:value={dateValue}
                     max={todayStr}
-                    class="w-full bg-surface border border-surface-lighter rounded-xl px-4 py-3 text-text focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
+                    class="w-full bg-bg border border-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white transition-all"
                 />
             </div>
             <div>
                 <label
                     for="event-time"
-                    class="block text-xs font-medium text-text-muted mb-1"
+                    class="block text-xs font-medium text-text-secondary mb-1"
                     >Time</label
                 >
                 <input
                     id="event-time"
                     type="time"
                     bind:value={timeValue}
-                    class="w-full bg-surface border border-surface-lighter rounded-xl px-4 py-3 text-text focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
+                    class="w-full bg-bg border border-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white transition-all"
                 />
             </div>
         </div>
 
-        <!-- Future date warning -->
         {#if isFuture}
-            <p class="text-absent/70 text-xs mb-3 text-center">
+            <p class="text-absent text-xs mb-3 text-center">
                 Future dates are not allowed
             </p>
         {/if}
@@ -154,14 +145,14 @@
         <div class="flex gap-3">
             <button
                 on:click={() => dispatch("cancel")}
-                class="flex-1 py-3 px-4 rounded-xl font-medium text-sm text-text-muted bg-surface border border-surface-lighter hover:bg-surface-lighter transition-colors"
+                class="flex-1 py-3 px-4 rounded-xl font-medium text-sm text-text-secondary bg-bg border border-border hover:bg-card-hover transition-colors"
             >
                 Cancel
             </button>
             <button
                 on:click={save}
                 disabled={isFuture}
-                class="flex-1 py-3 px-4 rounded-xl font-medium text-sm text-white bg-primary hover:bg-primary-light transition-colors active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed"
+                class="flex-1 py-3 px-4 rounded-xl font-medium text-sm text-black bg-white hover:bg-gray-200 transition-colors active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed"
             >
                 {mode === "add" ? "Add Event" : "Save"}
             </button>

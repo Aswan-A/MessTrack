@@ -13,18 +13,18 @@
 	$: isEligible = status?.isMessReductionEligible ?? false;
 	$: clickable = !isFuture;
 
-	function getColor(c: string): string {
+	function getBg(c: string): string {
 		switch (c) {
 			case "PRESENT":
-				return "bg-present/15 text-present";
+				return "bg-present text-black";
 			case "ABSENT":
-				return "bg-absent/15 text-absent";
+				return "bg-absent text-white";
 			case "LEAVING":
-				return "bg-leaving/15 text-leaving";
+				return "bg-leaving text-black";
 			case "RETURNING":
-				return "bg-returning/15 text-returning";
+				return "bg-returning text-white";
 			default:
-				return "text-text-muted";
+				return "bg-card text-text-secondary";
 		}
 	}
 </script>
@@ -32,13 +32,13 @@
 <button
 	on:click={() => clickable && dispatch("select", { day, status })}
 	class="w-full aspect-square rounded-lg text-sm font-medium flex items-center justify-center relative transition-colors
-		{getColor(classification)}
-		{isToday ? 'ring-2 ring-primary ring-offset-1 ring-offset-surface' : ''}
+		{getBg(classification)}
+		{isToday ? 'ring-2 ring-white ring-offset-1 ring-offset-bg' : ''}
 		{isFuture
 		? 'opacity-20 cursor-not-allowed'
 		: classification === 'NO_DATA'
-			? 'opacity-50 hover:opacity-70 hover:bg-surface-lighter/30'
-			: 'hover:opacity-80'}"
+			? 'hover:bg-card-hover'
+			: 'hover:brightness-90'}"
 	disabled={isFuture}
 >
 	{day}

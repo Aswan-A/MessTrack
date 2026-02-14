@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-	--color-primary: #6366f1;
-	--color-primary-light: #818cf8;
+	--color-bg: #000000;
+	--color-card: #111111;
+	--color-card-hover: #1a1a1a;
+	--color-border: #222222;
 
-	--color-surface: #0f172a;
-	--color-surface-light: #1e293b;
-	--color-surface-lighter: #334155;
+	--color-text: #ffffff;
+	--color-text-secondary: #999999;
 
-	--color-text: #e2e8f0;
-	--color-text-muted: #94a3b8;
+	--color-accent: #ffffff;
 
-	--color-present: #34d399;
-	--color-absent: #f87171;
-	--color-leaving: #fbbf24;
-	--color-returning: #60a5fa;
-	--color-mess-cut: #a78bfa;
-	--color-no-data: #475569;
+	--color-present: #22c55e;
+	--color-absent: #ef4444;
+	--color-leaving: #f59e0b;
+	--color-returning: #3b82f6;
+	--color-mess-cut: #a855f7;
+	--color-no-data: #444444;
 
 	--font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
@@ -24,7 +24,7 @@
 @layer base {
 	html {
 		font-family: var(--font-sans);
-		background-color: var(--color-surface);
+		background-color: var(--color-bg);
 		color: var(--color-text);
 		-webkit-tap-highlight-color: transparent;
 		-webkit-font-smoothing: antialiased;
@@ -35,57 +35,31 @@
 	}
 
 	::selection {
-		background-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+		background-color: #333333;
 	}
 
-	input,
-	select,
-	textarea {
+	input, select, textarea {
 		color-scheme: dark;
 	}
 }
 
-/* Animations */
 @keyframes fade-in {
-	from {
-		opacity: 0;
-		transform: translateY(8px);
-	}
-
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+	from { opacity: 0; transform: translateY(8px); }
+	to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes spin {
-	to {
-		transform: rotate(360deg);
-	}
+	to { transform: rotate(360deg); }
 }
 
 @keyframes pulse-soft {
-
-	0%,
-	100% {
-		opacity: 1;
-	}
-
-	50% {
-		opacity: 0.6;
-	}
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.5; }
 }
 
 @keyframes slide-up {
-	from {
-		opacity: 0;
-		transform: translateY(100%);
-	}
-
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+	from { opacity: 0; transform: translateY(100%); }
+	to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in {

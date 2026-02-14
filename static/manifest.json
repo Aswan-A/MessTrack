@@ -1,12 +1,12 @@
 {
 	"name": "Hostel Mess Tracker",
 	"short_name": "MessTrack",
-	"description": "Track hostel leave & calculate mess reduction days. Offline-first, encrypted backup to Google Drive.",
+	"description": "Track hostel leave & calculate mess reduction days. Offline-first.",
 	"start_url": "/",
 	"scope": "/",
 	"display": "standalone",
-	"background_color": "#0f172a",
-	"theme_color": "#0f172a",
+	"background_color": "#000000",
+	"theme_color": "#000000",
 	"orientation": "portrait",
 	"icons": [
 		{

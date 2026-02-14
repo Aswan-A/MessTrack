@@ -10,7 +10,6 @@
     let backupMessage = "";
     let fileInput: HTMLInputElement;
 
-    // Update local values when store changes
     $: {
         X = $settings.X;
         Y_time = $settings.Y_time;
@@ -18,12 +17,7 @@
     }
 
     async function saveSettings() {
-        const updated = {
-            X,
-            Y_time,
-            Z_time,
-            updatedAt: Date.now(),
-        };
+        const updated = { X, Y_time, Z_time, updatedAt: Date.now() };
         await updateSettings(updated);
         settings.set(updated);
         saveMessage = "Settings saved!";
@@ -49,7 +43,6 @@
         backupMessage = success ? "Backup restored!" : "Invalid backup file";
         setTimeout(() => (backupMessage = ""), 3000);
 
-        // Reset file input
         target.value = "";
     }
 </script>
@@ -57,15 +50,15 @@
 <div class="space-y-6 animate-fade-in">
     <div>
         <h1 class="text-2xl font-bold">Settings</h1>
-        <p class="text-text-muted text-sm mt-0.5">Configure attendance rules</p>
+        <p class="text-text-secondary text-sm mt-0.5">
+            Configure attendance rules
+        </p>
     </div>
 
     <!-- Attendance Rules -->
-    <div
-        class="rounded-2xl bg-surface-light/50 border border-surface-lighter/30 p-5 space-y-4"
-    >
+    <div class="rounded-2xl bg-card border border-border p-5 space-y-4">
         <h3
-            class="text-sm font-semibold uppercase tracking-wider text-text-muted"
+            class="text-sm font-semibold uppercase tracking-wider text-text-secondary"
         >
             Attendance Rules
         </h3>
@@ -74,7 +67,7 @@
             <label for="setting-x" class="block text-sm font-medium mb-1.5">
                 Minimum consecutive days (X)
             </label>
-            <p class="text-xs text-text-muted mb-2">
+            <p class="text-xs text-text-secondary mb-2">
                 Minimum full absent days to qualify for mess reduction
             </p>
             <input
@@ -83,7 +76,7 @@
                 min="1"
                 max="30"
                 bind:value={X}
-                class="w-full bg-surface border border-surface-lighter rounded-xl px-4 py-3 text-text focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                class="w-full bg-bg border border-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white transition-all"
             />
         </div>
 
@@ -91,14 +84,14 @@
             <label for="setting-y" class="block text-sm font-medium mb-1.5">
                 Leave cutoff time (Y)
             </label>
-            <p class="text-xs text-text-muted mb-2">
+            <p class="text-xs text-text-secondary mb-2">
                 If you leave before this time, the day counts as full absent
             </p>
             <input
                 id="setting-y"
                 type="time"
                 bind:value={Y_time}
-                class="w-full bg-surface border border-surface-lighter rounded-xl px-4 py-3 text-text focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                class="w-full bg-bg border border-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white transition-all"
             />
         </div>
 
@@ -106,20 +99,20 @@
             <label for="setting-z" class="block text-sm font-medium mb-1.5">
                 Return cutoff time (Z)
             </label>
-            <p class="text-xs text-text-muted mb-2">
+            <p class="text-xs text-text-secondary mb-2">
                 If you return after this time, the day counts as full absent
             </p>
             <input
                 id="setting-z"
                 type="time"
                 bind:value={Z_time}
-                class="w-full bg-surface border border-surface-lighter rounded-xl px-4 py-3 text-text focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                class="w-full bg-bg border border-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white transition-all"
             />
         </div>
 
         <button
             on:click={saveSettings}
-            class="w-full py-3 px-4 rounded-xl font-semibold text-white bg-primary hover:bg-primary-light shadow-lg shadow-primary/20 transition-all active:scale-[0.98]"
+            class="w-full py-3 px-4 rounded-xl font-semibold text-black bg-white hover:bg-gray-200 transition-colors active:scale-[0.98]"
         >
             Save Settings
         </button>
@@ -132,30 +125,28 @@
     </div>
 
     <!-- Backup & Restore -->
-    <div
-        class="rounded-2xl bg-surface-light/50 border border-surface-lighter/30 p-5 space-y-3"
-    >
+    <div class="rounded-2xl bg-card border border-border p-5 space-y-3">
         <h3
-            class="text-sm font-semibold uppercase tracking-wider text-text-muted"
+            class="text-sm font-semibold uppercase tracking-wider text-text-secondary"
         >
             Backup & Restore
         </h3>
-        <p class="text-xs text-text-muted">
+        <p class="text-xs text-text-secondary">
             Download your data as a JSON file or restore from a previous backup.
         </p>
 
         <div class="flex gap-3">
             <button
                 on:click={handleDownload}
-                class="flex-1 py-3 px-4 rounded-xl font-medium text-sm bg-surface border border-surface-lighter hover:bg-surface-lighter transition-colors"
+                class="flex-1 py-3 px-4 rounded-xl font-medium text-sm bg-bg border border-border hover:bg-card-hover transition-colors"
             >
-                📥 Download Backup
+                📥 Download
             </button>
             <button
                 on:click={() => fileInput.click()}
-                class="flex-1 py-3 px-4 rounded-xl font-medium text-sm bg-surface border border-surface-lighter hover:bg-surface-lighter transition-colors"
+                class="flex-1 py-3 px-4 rounded-xl font-medium text-sm bg-bg border border-border hover:bg-card-hover transition-colors"
             >
-                📤 Upload Backup
+                📤 Upload
             </button>
         </div>
 
@@ -180,8 +171,7 @@
         {/if}
     </div>
 
-    <!-- Footer -->
-    <p class="text-center text-xs text-text-muted pb-4">
+    <p class="text-center text-xs text-text-secondary pb-4">
         MessTrack v1.0 — Your data, your device, your control.
     </p>
 </div>
